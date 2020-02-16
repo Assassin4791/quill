@@ -332,6 +332,31 @@ lazy val `quill-async-postgres` =
     )
     .dependsOn(`quill-async` % "compile->compile;test->test")
 
+lazy val `quill-jasync` =
+  (project in file("quill-jasync"))
+    .settings(commonSettings: _*)
+    .settings(mimaSettings: _*)
+    .settings(
+      fork in Test := true,
+      libraryDependencies ++= Seq(
+        "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0",
+        "com.github.jasync-sql" % "jasync-postgresql"  % "1.0.14"
+      )
+    )
+    .dependsOn(`quill-sql-jvm` % "compile->compile;test->test")
+
+lazy val `quill-jasync-postgres` =
+  (project in file("quill-jasync-postgres"))
+    .settings(commonSettings: _*)
+    .settings(mimaSettings: _*)
+    .settings(
+      fork in Test := true,
+      libraryDependencies ++= Seq(
+        //"com.github.mauricio" %% "postgresql-async" % "0.2.21"
+      )
+    )
+    .dependsOn(`quill-jasync` % "compile->compile;test->test")
+
 lazy val `quill-ndbc` =
   (project in file("quill-ndbc"))
     .settings(commonSettings: _*)
