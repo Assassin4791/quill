@@ -1,10 +1,10 @@
 package io.getquill.context.jasync.postgres
 
-//import com.github.jasync.sql.db.{ QueryResult, ResultSet, RowData }
-//import io.getquill.ReturnAction.ReturnColumns
+import com.github.jasync.sql.db.QueryResult
+import io.getquill.ReturnAction.ReturnColumns
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import io.getquill.{ /*Literal, PostgresAsyncContext, ReturnAction,*/ Spec }
+import io.getquill.{ Literal, PostgresJAsyncContext, ReturnAction, Spec }
 
 class PostgresJAsyncContextSpec extends Spec {
 
@@ -40,21 +40,19 @@ class PostgresJAsyncContextSpec extends Spec {
     probe("select 1").toOption mustBe defined
   }
 
-  //не понял как создать EMPTY_RESULT_SET для QueryResult
-
-  //    "cannot extract" in {
-  //      object ctx extends PostgresAsyncContext(Literal, "testPostgresDB") {
-  //        override def extractActionResult[O](
-  //          returningAction:    ReturnAction,
-  //          returningExtractor: ctx.Extractor[O]
-  //        )(result: QueryResult) =
-  //          super.extractActionResult(returningAction, returningExtractor)(result)
-  //      }
-  //      intercept[IllegalStateException] {
-  //        ctx.extractActionResult(ReturnColumns(List("w/e")), row => 1)(new QueryResult(0, "w/e", com.github.jasync.sql.db.EMPTY_RESULT_SET))
-  //      }
-  //      ctx.close
-  //    }
+  "cannot extract" in {
+    object ctx extends PostgresJAsyncContext(Literal, "testPostgresDB") {
+      override def extractActionResult[O](
+        returningAction:    ReturnAction,
+        returningExtractor: ctx.Extractor[O]
+      )(result: QueryResult) =
+        super.extractActionResult(returningAction, returningExtractor)(result)
+    }
+    intercept[IllegalStateException] {
+      ctx.extractActionResult(ReturnColumns(List("w/e")), row => 1)(new QueryResult(0, "w/e", com.github.jasync.sql.db.ResultSetKt.getEMPTY_RESULT_SET))
+    }
+    ctx.close
+  }
 
   "prepare" in {
     testContext.prepareParams("", { ps =>
