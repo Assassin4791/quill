@@ -21,6 +21,7 @@ lazy val dbModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
 
 lazy val asyncModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
   `quill-async`, `quill-async-mysql`, `quill-async-postgres`,
+  `quill-jasync`, `quill-jasync-postgres`,
   `quill-finagle-mysql`, `quill-finagle-postgres`,
   `quill-ndbc`, `quill-ndbc-postgres`
 )

@@ -1,9 +1,9 @@
 package io.getquill.context.jasync.postgres
 
-import com.github.jasync.sql.db.QueryResult
+import com.github.jasync.sql.db.{ QueryResult, ResultSetKt }
 import io.getquill.ReturnAction.ReturnColumns
-
 import scala.concurrent.ExecutionContext.Implicits.global
+
 import io.getquill.{ Literal, PostgresJAsyncContext, ReturnAction, Spec }
 
 class PostgresJAsyncContextSpec extends Spec {
@@ -49,7 +49,7 @@ class PostgresJAsyncContextSpec extends Spec {
         super.extractActionResult(returningAction, returningExtractor)(result)
     }
     intercept[IllegalStateException] {
-      ctx.extractActionResult(ReturnColumns(List("w/e")), row => 1)(new QueryResult(0, "w/e", com.github.jasync.sql.db.ResultSetKt.getEMPTY_RESULT_SET))
+      ctx.extractActionResult(ReturnColumns(List("w/e")), row => 1)(new QueryResult(0, "w/e", ResultSetKt.getEMPTY_RESULT_SET))
     }
     ctx.close
   }

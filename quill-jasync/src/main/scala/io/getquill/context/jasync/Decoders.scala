@@ -1,5 +1,6 @@
 package io.getquill.context.jasync
 
+import java.math.{ BigDecimal => JavaBigDecimal }
 import java.time._
 import java.util.Date
 
@@ -46,17 +47,15 @@ trait Decoders {
 
   trait NumericDecoder[T] extends BaseDecoder[T] {
 
-    //import scala.Numeric.ByteIsIntegral
-
     def apply(index: Index, row: ResultRow) = {
       (row.get(index): Any) match {
-        case v: Byte                 => decode(v)
-        case v: Short                => decode(v)
-        case v: Int                  => decode(v)
-        case v: Long                 => decode(v)
-        case v: Float                => decode(v)
-        case v: Double               => decode(v)
-        case v: java.math.BigDecimal => decode(v: BigDecimal)
+        case v: Byte           => decode(v)
+        case v: Short          => decode(v)
+        case v: Int            => decode(v)
+        case v: Long           => decode(v)
+        case v: Float          => decode(v)
+        case v: Double         => decode(v)
+        case v: JavaBigDecimal => decode(v: BigDecimal)
         case other =>
           fail(s"Value $other is not numeric, type: ${other.getClass.getCanonicalName}")
       }

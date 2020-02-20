@@ -17,7 +17,7 @@ import io.getquill.{ NamingStrategy, ReturnAction }
 import io.getquill.util.ContextLogger
 import io.getquill.monad.ScalaFutureIOMonad
 import io.getquill.context.{ Context, TranslateContext }
-import kotlin.jvm.functions
+import kotlin.jvm.functions.Function1
 import scala.collection.JavaConversions._
 import scala.compat.java8.FutureConverters
 
@@ -44,7 +44,7 @@ abstract class JAsyncContext[D <: SqlIdiom, N <: NamingStrategy, C <: ConcreteCo
 
   implicit def toFuture[T](cf: CompletableFuture[T]): Future[T] = FutureConverters.toScala(cf)
   implicit def toCompletableFuture[T](f: Future[T]): CompletableFuture[T] = FutureConverters.toJava(f).asInstanceOf[CompletableFuture[T]]
-  implicit def toKotlinFunction[T, R](f: T => R): functions.Function1[T, R] = new kotlin.jvm.functions.Function1[T, R] {
+  implicit def toKotlinFunction[T, R](f: T => R): Function1[T, R] = new Function1[T, R] {
     override def invoke(t: T): R = f(t)
   }
 
