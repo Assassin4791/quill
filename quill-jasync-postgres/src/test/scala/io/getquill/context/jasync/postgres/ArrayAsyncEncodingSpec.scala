@@ -71,13 +71,12 @@ class ArrayAsyncEncodingSpec extends ArrayEncodingBaseSpec {
     newCtx.close()
   }
 
-  //не смог привести типы списков к тем же что в кейсклассе
   "Arrays in where clause" in {
     await(ctx.run(q.insert(lift(e))))
     val actual1 = await(ctx.run(q.filter(_.texts == lift(List("test")))))
     val actual2 = await(ctx.run(q.filter(_.texts == lift(List("test2")))))
     baseEntityDeepCheck(actual1.head, e)
-    //actual1 mustEqual List(e)
+    actual1 mustEqual List(e)
     actual2 mustEqual List()
   }
 
